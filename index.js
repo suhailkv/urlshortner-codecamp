@@ -32,6 +32,12 @@ app.get('/', function(req, res) {
 });
 
 app.post('/api/shorturl', function(req, res) {
+  var regex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+  if(! regex.test(req.body.url)){
+  return res.json({ error: 'invalid url' })
+}else{
+
+
   const url = req.body.url.split('/');
   dns.resolve4(url[2],(err,add)=>{
     if(err) {
@@ -68,6 +74,7 @@ app.post('/api/shorturl', function(req, res) {
       })
     }   
   })
+  }
 });
 
 app.get('/api/shorturl/:id',(req,res)=>{
